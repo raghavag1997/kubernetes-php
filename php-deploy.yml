@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myphp-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: production-frontend
+  template:
+    metadata:
+      name: myfrontend-pod
+      labels:
+        env: production-frontend
+    spec:
+      volumes:
+        - name: front-vol
+          persistentVolumeClaim:
+            claimName: frontend-pvc 
+      containers:
+      - name: frontend
+        image: ragh19/phpproject:web_v1
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: front-vol
+

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: production-db
+  template:
+    metadata:
+      name: mydb-pod
+      labels:
+        env: production-db
+    spec:
+      volumes:
+        - name: db-vol
+          persistentVolumeClaim:
+            claimName: db-pvc 
+      containers:
+      - name: database
+        image: ragh19/phpproject:mysql_v1
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: db-vol
+
